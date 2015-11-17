@@ -18,14 +18,14 @@ public class PayeeTest
 		//PayeeID, PayeeName, PayerAccountNumber, PayeeAddress, PayeePhoneNumber, CustomerID
 		
 		// test for addPayee()
-		// Payee payee = new Payee("Radhika", "23456789", "add0 add9 add13", "8143230969", "Himaja");
-		// Payee payee1 = new Payee("Krishna", "11111111", "add1 add9 add13", "9999999999", "Himaja");
-		// Payee payee2 = new Payee("John", "22222222", "add1 add9 add13", "000000000", "Suman");
-		// Payee payee3 = new Payee("Green", "66666666", "add1 add9 add13", "7878787878", "Suman");
-		// payee.addPayee();
-		// payee1.addPayee();
-		// payee2.addPayee();
-		// payee3.addPayee();
+		Payee payee = new Payee("Radhika", "23456789", "add0 add9 add13", "8143230969", "Himaja");
+		Payee payee1 = new Payee("Krishna", "11111111", "add1 add9 add13", "9999999999", "Himaja");
+		Payee payee2 = new Payee("John", "22222222", "add1 add9 add13", "000000000", "Suman");
+		Payee payee3 = new Payee("Green", "66666666", "add1 add9 add13", "7878787878", "Suman");
+		payee.addPayee();
+		payee1.addPayee();
+		payee2.addPayee();
+		payee3.addPayee();
 
 		//test for getPAyeeList
 		List <Payee> payeeList = new ArrayList<Payee>();

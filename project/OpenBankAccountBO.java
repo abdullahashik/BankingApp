@@ -12,7 +12,8 @@ class OpenBankAccountPanel extends JPanel implements ActionListener
     private JButton OpenButton;
     private JTextField UsernameField, NameField, AccountNumberField, BalanceField;
     private JComboBox CheckingOrSavingsBox;
-    private String UName, AccountNumber, Balance, Name, AccountType;
+    private String UName, AccountNumber, Name, AccountType;
+    private float Balance;
 
     public OpenBankAccountPanel(String UName, String CustomerName)
     {
@@ -70,12 +71,13 @@ class OpenBankAccountPanel extends JPanel implements ActionListener
             UName = UsernameField.getText(); //take actions
             Name = NameField.getText();
             AccountNumber = AccountNumberField.getText();
-            Balance = BalanceField.getText();
+            String balStr = BalanceField.getText();
+            Balance = Float.parseFloat(balStr);
             AccountType = (String)CheckingOrSavingsBox.getSelectedItem();
             if (AccountType.equals("Choose Account Type"))
                 JOptionPane.showMessageDialog(null, "Please Choose an Account Type!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-            else if (AccountNumber.length() != 8 )
-                     JOptionPane.showMessageDialog(null, "Please Enter an Account Number with Exactly 8 Characters!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            else if (AccountNumber.length() != 10 )
+                     JOptionPane.showMessageDialog(null, "Please Enter an Account Number with Exactly 10 Characters!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                  else {
 					 OpenBankAccountControl OBAcct_Ctrl = new OpenBankAccountControl(AccountType, AccountNumber, Name, UName, Balance);
 				 }
@@ -101,38 +103,38 @@ class OpenBankAccountPanel extends JPanel implements ActionListener
 	}*/
 }
 
-public class OpenBankAccountBO extends JFrame
-{
-    private OpenBankAccountPanel OBA_Panel;
+// public class OpenBankAccountBO extends JFrame
+// {
+//     private OpenBankAccountPanel OBA_Panel;
 
-    public OpenBankAccountBO(String UName, String CustomerName)
-    {
-        setTitle("Open a Bank Account");
-        setSize(350, 260);
+//     public OpenBankAccountBO(String UName, String CustomerName)
+//     {
+//         setTitle("Open a Bank Account");
+//         setSize(350, 260);
 
-         //get screen size and set the location of the frame
-         Toolkit tk = Toolkit.getDefaultToolkit();
-         Dimension d = tk.getScreenSize();
-         int screenHeight = d.height;
-         int screenWidth = d.width;
-         setLocation( screenWidth / 3, screenHeight / 4);
+//          //get screen size and set the location of the frame
+//          Toolkit tk = Toolkit.getDefaultToolkit();
+//          Dimension d = tk.getScreenSize();
+//          int screenHeight = d.height;
+//          int screenWidth = d.width;
+//          setLocation( screenWidth / 3, screenHeight / 4);
 
-         addWindowListener (new WindowAdapter()  //handle window event
-            {
-		       public void windowClosing (WindowEvent e)
-			                  { System.exit(0);
-               }
-            });
+//          addWindowListener (new WindowAdapter()  //handle window event
+//             {
+// 		       public void windowClosing (WindowEvent e)
+// 			                  { System.exit(0);
+//                }
+//             });
 
-         Container contentPane = getContentPane(); //add a panel to a frame
-         OBA_Panel = new OpenBankAccountPanel(UName, CustomerName);
-         contentPane.add(OBA_Panel);
-         show();
-    }
+//          Container contentPane = getContentPane(); //add a panel to a frame
+//          OBA_Panel = new OpenBankAccountPanel(UName, CustomerName);
+//          contentPane.add(OBA_Panel);
+//          show();
+//     }
 
-    /*public static void main(String [] args)
-    { JFrame frame = new SignUpBO(); //initialize a JFrame object
-      frame.show(); //display the frame
-    }*/
-}
+//     /*public static void main(String [] args)
+//     { JFrame frame = new SignUpBO(); //initialize a JFrame object
+//       frame.show(); //display the frame
+//     }*/
+// }
 

@@ -4,8 +4,8 @@
 *******************************************************************************/
 
 /*
-Payee(PayeeID, PayeeName, PayerAccountNumber, PayeeAddress, PayeePhoneNumber, CustomerID)
-Payee with proper instance variables and methods of adding a Payee, updating a Payee and deleting a Payee
+* Members: PayeeID, PayeeName, PayerAccountNumber, PayeeAddress, PayeePhoneNumber, CustomerID
+* Methods: addPayee, updatePayee, deletePayee, getPayeeList
 */
 package com.ruttala.banking;
 import java.util.*;
@@ -223,5 +223,47 @@ public class Payee
 	    }
 	    return PayeeList;
 	}
-	
+
+	public static Payee getPayeeInfo(UUID PayeeID){
+		Payee P = new Payee();
+		boolean done = false;
+		try {		//20
+		        DBConnection ToDB = new DBConnection(); //Have a connection to the DB
+		        Connection DBConn = ToDB.openConn();
+		        Statement Stmt = DBConn.createStatement();
+		        String SQL_Command = "SELECT * FROM Payee WHERE PayeeID ='"+PayeeID+"'"; //SQL query command
+		        ResultSet Rslt = Stmt.executeQuery(SQL_Command); //Inquire if the username exsits.
+		        while (Rslt.next()) {
+                	
+                	UUID P_Id = UUID.fromString(Rslt.getString("PayeeID"));
+                	String P_Name = Rslt.getString("PayeeName"),
+                	PA_Num =  Rslt.getString("PayerAccountNumber"), 
+                	P_Address = Rslt.getString("PayeeAddress"), 
+                	PPh_Num = Rslt.getString("PayeePhoneNumber"),
+                	Cust_ID = Rslt.getString("CustomerID");
+                	
+                	P = new Payee(P_Id, P_Name, PA_Num, P_Address, PPh_Num, Cust_ID); // Creating a new object
+                }
+			        Stmt.close();
+			        ToDB.closeConn();
+                    done=true;
+		}
+	    catch(java.sql.SQLException e)		//5
+	    {         done = false;
+				 System.out.println("SQLException: " + e);
+				 while (e != null)
+				 {   System.out.println("SQLState: " + e.getSQLState());
+					 System.out.println("Message: " + e.getMessage());
+					 System.out.println("Vendor: " + e.getErrorCode());
+					 e = e.getNextException();
+					 System.out.println("");
+				 }
+	    }
+	    catch (java.lang.Exception e)
+	    {         done = false;
+				 System.out.println("Exception: " + e);
+				 e.printStackTrace ();
+	    }
+	    return P;
+	}
 }

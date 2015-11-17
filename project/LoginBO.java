@@ -6,6 +6,7 @@
 import java.awt.*;     //including Java packages used by this program
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.UIManager.*;
 
 public class LoginBO extends JFrame implements ActionListener // Implementing ActionListener is for event handling.
 {
@@ -17,7 +18,7 @@ public class LoginBO extends JFrame implements ActionListener // Implementing Ac
     public LoginBO()
     {
         setTitle("Login");
-        setSize(300, 200);
+        setSize(300, 230);
 
          //get screen size and set the location of the frame
          Toolkit tk = Toolkit.getDefaultToolkit();
@@ -86,8 +87,19 @@ public class LoginBO extends JFrame implements ActionListener // Implementing Ac
     }
 
     public static void main(String [] args)
-    { JFrame frame = new LoginBO(); //initialize a JFrame object
-      frame.show(); //display the frame
+    { 
+        // try {
+        //     for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        //         if ("Nimbus".equals(info.getName())) {
+        //             UIManager.setLookAndFeel(info.getClassName());
+        //             break;
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     // If Nimbus is not available, you can set the GUI to another look and feel.
+        // }
+        JFrame frame = new LoginBO(); //initialize a JFrame object
+        frame.show(); //display the frame
     }
 }
 

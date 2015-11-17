@@ -4,9 +4,8 @@
 *******************************************************************************/
 
 /*
-Payment(PaymentID, Amount, PaymentDate, PayeeID, FromAccount, Status, CustomerID)
-FromAccount - foreign key of
-Payment with proper instance variables with methods of scheduling a Payment, canceling a scheduled Payment, delivering a scheduled Payment
+* Members: PaymentID, Amount, PaymentDate, PayeeID, FromAccount, Status, CustomerID
+* Methods: schedulePayment, updatePayment, cancelPayment, getPaymentList
 */
 
 package com.ruttala.banking;
@@ -47,7 +46,6 @@ public class Payment
 		Status = Stat;
 		CustomerID = Cust_ID;
 	}
-
 	public Payment(){}
 
 	/*getters*/
@@ -60,6 +58,9 @@ public class Payment
 	public UUID getPayeeID(){
 		return PayeeID;
 	}
+	public UUID getPaymentID(){
+		return PaymentID;
+	}
 	public String getFromAccount(){
 		return FromAccount;
 	}
@@ -69,6 +70,7 @@ public class Payment
 	public String getCustomerID(){
 		return CustomerID;
 	}
+
 	/*setters*/
 	public void setPaymentAmount(float Amt){
 		Amount = Amt;
@@ -85,7 +87,6 @@ public class Payment
 	public void setStatus(String Stat){
 		Status = Stat;
 	}
-
 
 	/*methods*/
 	public boolean schedulePayment(){
@@ -126,59 +127,7 @@ public class Payment
 	    }
 	    return done;
 	}
-	public static List<Payment> getPaymentList(String CustomerID){
-		List <Payment> PaymentList = new ArrayList<Payment>();
-		DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-		boolean done = false;
-		try {		//20
-		        DBConnection ToDB = new DBConnection(); //Have a connection to the DB
-		        Connection DBConn = ToDB.openConn();
-		        Statement Stmt = DBConn.createStatement();
-		        String SQL_Command = "SELECT * FROM Payment WHERE CustomerID ='"+CustomerID+"'"; //SQL query command
-		        ResultSet Rslt = Stmt.executeQuery(SQL_Command); //Inquire if the username exsits.
-		        while (Rslt.next()) {
-                	
-                	UUID Paymt_Id = UUID.fromString(Rslt.getString("PaymentID"));
-                	float Amt = Float.parseFloat(Rslt.getString("Amount"));
-                	//formating string to date
-					java.sql.Date SQ_Pa_Date = Rslt.getDate("PaymentDate");
-					java.util.Date Pa_Date = new java.util.Date(SQ_Pa_Date.getTime());
-                	UUID Pa_ID = UUID.fromString(Rslt.getString("PayeeID"));
-                	String Frm_Acc = Rslt.getString("FromAccount");
-                	String Stat = Rslt.getString("Status");
-                	String Cust_ID = Rslt.getString("CustomerID");
-                	
-                	Payment payment = new Payment(Paymt_Id, Amt, Pa_Date, Pa_ID, Frm_Acc, Stat, Cust_ID); // Creating a new object
-					PaymentList.add(payment);
-                }
-			        Stmt.close();
-			        ToDB.closeConn();
-                    done=true;
-		}
-	    catch(java.sql.SQLException e)		//5
-	    {         done = false;
-				 System.out.println("SQLException: " + e);
-				 while (e != null)
-				 {   System.out.println("SQLState: " + e.getSQLState());
-					 System.out.println("Message: " + e.getMessage());
-					 System.out.println("Vendor: " + e.getErrorCode());
-					 e = e.getNextException();
-					 System.out.println("");
-				 }
-	    }
-	    catch (java.lang.Exception e)
-	    {         done = false;
-				 System.out.println("Exception: " + e);
-				 e.printStackTrace ();
-	    }
-	    return PaymentList;
-	}
 	public boolean updatePayment(){
-		System.out.println("PaymentDate: " + PaymentDate);
-		System.out.println("PayeeID: " + PayeeID);
-		System.out.println("FromAccount: " + FromAccount);
-		System.out.println("CustomerID: " + CustomerID);
-		System.out.println("Status: " + Status);
 		boolean done = !PaymentDate.equals("") && !PayeeID.equals("") && !FromAccount.equals("") && !CustomerID.equals("")&& !Status.equals("");
 		try {		//20
 		        if(done){
@@ -248,5 +197,87 @@ public class Payment
 	    }
 	    return done;
 	}
-	// public deliverPayment(){}
+	public static List<Payment> getPaymentList(String CustomerID){
+		List <Payment> PaymentList = new ArrayList<Payment>();
+		DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
+		boolean done = false;
+		try {		//20
+		        DBConnection ToDB = new DBConnection(); //Have a connection to the DB
+		        Connection DBConn = ToDB.openConn();
+		        Statement Stmt = DBConn.createStatement();
+		        String SQL_Command = "SELECT * FROM Payment WHERE CustomerID ='"+CustomerID+"'"; //SQL query command
+		        ResultSet Rslt = Stmt.executeQuery(SQL_Command); //Inquire if the username exsits.
+		        while (Rslt.next()) {
+                	
+                	UUID Paymt_Id = UUID.fromString(Rslt.getString("PaymentID"));
+                	float Amt = Float.parseFloat(Rslt.getString("Amount"));
+                	//formating string to date
+					java.sql.Date SQ_Pa_Date = Rslt.getDate("PaymentDate");
+					java.util.Date Pa_Date = new java.util.Date(SQ_Pa_Date.getTime());
+                	UUID Pa_ID = UUID.fromString(Rslt.getString("PayeeID"));
+                	String Frm_Acc = Rslt.getString("FromAccount");
+                	String Stat = Rslt.getString("Status");
+                	String Cust_ID = Rslt.getString("CustomerID");
+                	
+                	Payment payment = new Payment(Paymt_Id, Amt, Pa_Date, Pa_ID, Frm_Acc, Stat, Cust_ID); // Creating a new object
+					PaymentList.add(payment);
+                }
+			        Stmt.close();
+			        ToDB.closeConn();
+                    done=true;
+		}
+	    catch(java.sql.SQLException e)		//5
+	    {         done = false;
+				 System.out.println("SQLException: " + e);
+				 while (e != null)
+				 {   System.out.println("SQLState: " + e.getSQLState());
+					 System.out.println("Message: " + e.getMessage());
+					 System.out.println("Vendor: " + e.getErrorCode());
+					 e = e.getNextException();
+					 System.out.println("");
+				 }
+	    }
+	    catch (java.lang.Exception e)
+	    {         done = false;
+				 System.out.println("Exception: " + e);
+				 e.printStackTrace ();
+	    }
+	    return PaymentList;
+	}
+	public boolean deliverPayment(){
+		boolean done = !PaymentID.equals("");
+		try {		//20
+		        if(done){
+			        DBConnection ToDB = new DBConnection(); //Have a connection to the DB
+			        Connection DBConn = ToDB.openConn();
+			        Statement Stmt = DBConn.createStatement();
+			        String SQL_Command = "SELECT * FROM Payment WHERE PaymentID ='"+PaymentID + "';"; //SQL query command
+			        ResultSet Rslt = Stmt.executeQuery(SQL_Command); //Inquire if the username exsits.
+			        if (Rslt.next()) {
+			        	java.sql.Date SQ_PaymentDate = new java.sql.Date(PaymentDate.getTime());
+					    SQL_Command = "UPDATE Payment SET Status= 'delivered';";
+					    Stmt.executeUpdate(SQL_Command);
+				        Stmt.close();
+				        ToDB.closeConn();
+					}
+		        }
+		}
+	    catch(java.sql.SQLException e)		//5
+	    {         done = false;
+				 System.out.println("SQLException: " + e);
+				 while (e != null)
+				 {   System.out.println("SQLState: " + e.getSQLState());
+					 System.out.println("Message: " + e.getMessage());
+					 System.out.println("Vendor: " + e.getErrorCode());
+					 e = e.getNextException();
+					 System.out.println("");
+				 }
+	    }
+	    catch (java.lang.Exception e)
+	    {         done = false;
+				 System.out.println("Exception: " + e);
+				 e.printStackTrace ();
+	    }
+	    return done;
+	}
 }
